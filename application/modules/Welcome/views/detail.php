@@ -54,40 +54,11 @@
 </div>
 </div>
 <!-- Header End====================================================================== -->
-<div id="carouselBlk">
-	<div id="myCarousel" class="carousel slide">
-		<div class="carousel-inner">
-		  
-		  <div class="item active">
-		  <div class="container">
-			<a href="register.html"><img style="width:100%" src="<?=base_url()?>assets/themes/images/carousel/1.png" alt="special offers"/></a>
-			<div class="carousel-caption">
-				  <h4>Second Thumbnail label</h4>
-				  <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-				</div>
-		  </div>
-		  </div>
-
-		  <div class="item">
-		  <div class="container">
-			<a href="register.html"><img style="width:100%" src="<?=base_url()?>assets/themes/images/carousel/2.png" alt=""/></a>
-				<div class="carousel-caption">
-				  <h4>Second Thumbnail label</h4>
-				  <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-				</div>
-		  </div>
-
-		  </div>
-		</div>
-		<a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-		<a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
-	  </div> 
-</div>
 <div id="mainBody">
 	<div class="container">
 	<div class="row">
 <!-- Sidebar ================================================== -->
-	<div id="sidebar" class="span3">
+<div id="sidebar" class="span3">
 		<ul id="sideManu" class="nav nav-tabs nav-stacked">
 			<li><a href="#">- Program Diskon -</a></li>
 			<li><a href="<?='/consume_commerce/index.php/Welcome/get_products_discount/get_one/100'?>">Buy One Get One Free</a></li>
@@ -97,99 +68,70 @@
 
 		</ul>
 		<br/>
-		<!-- 
-		  <div class="thumbnail">
-			<img src="<?=base_url()?>assets/themes/images/products/panasonic.jpg" alt="Bootshop panasonoc New camera"/>
-			<div class="caption">
-			  <h5>Panasonic</h5>
-				<h4 style="text-align:center"><a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="#">$222.00</a></h4>
-			</div>
-		  </div><br/>
-			<div class="thumbnail">
-				<img src="<?=base_url()?>assets/themes/images/products/kindle.png" title="Bootshop New Kindel" alt="Bootshop Kindel">
-				<div class="caption">
-				  <h5>Kindle</h5>
-				    <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="#">$222.00</a></h4>
-				</div>
-			  </div><br/>
-			<div class="thumbnail">
-				<img src="<?=base_url()?>assets/themes/images/payment_methods.png" title="Bootshop Payment Methods" alt="Payments Methods">
-				<div class="caption">
-				  <h5>Payment Methods</h5>
-				</div>
-			  </div> -->
 	</div>
 <!-- Sidebar end=============================================== -->
-		<div class="span9">		
-			<div class="well well-small">
-			<h4>Produk Paling Laris <small class="pull-right">10 produk paling laris</small></h4>
-			<div class="row-fluid">
-			<div id="featured" class="carousel slide">
-			<div class="carousel-inner">
-			  <div class="item active">
-			  <ul class="thumbnails">
-			  	<!-- <?php print_r($favorites) ?>	 -->
-			  <?php foreach($favorites['products'] as $favorite){?>
-				<li class="span3">
-				  <div class="thumbnail">
-				  <!-- <i class="tag"></i> -->
-				  	<?php $img2 = base_url().'/assets/img-items/'.$favorite['id'].'.jpg' ?>
-
-					<a href="<?='/consume_commerce/index.php/Welcome/get_product_detail/'.$favorite['id']?>"><img src="<?=$img2?>" alt=""></a>
-					<div class="caption text-center">
-					  <h5><?=$favorite['name'] ?></h5>
-					  
-					  <center><h4 class="text-center">
-					  	<span class="btn">Rp. <?=number_format($favorite['price'],0,',','.')?></span> 
-					  	<span class="btn">Sold : <?=$favorite['sold']?> Units</span>
-					  </h4></center>
-					  					
-					  					</div>
-
-				  </div>
-				</li>
-			  <?php } ?>
-
-			  </ul>
-			  </div>
-			  </div>
-			  <!-- <a class="left carousel-control" href="#featured" data-slide="prev">‹</a> -->
-			  <!-- <a class="right carousel-control" href="#featured" data-slide="next">›</a> -->
-			  </div>
-			  </div>
-		</div>
-		<h4>Produk <?=$head_product?></h4>
-			  <ul class="thumbnails">
-				<?php foreach ($items['products'] as $item){ ?>
-				
-				<li class="span3">
-				  <div class="thumbnail">
-				  	<!-- base_url()?>assets/themes/css/bootstrap-responsive.min.css -->
+	<div class="span9">
+	
+	<div class="row">	  
+			<div id="gallery" class="span3">
 				  	<?php $img = base_url().'/assets/img-items/'.$item['id'].'.jpg' ?>
-					<a  href="product_details.html"><img src="<?=$img?>" alt=""/></a>
-					<div class="caption">
-					  <h5><?=$item['name']?></h5>
-					  <p> 
-						contoh deskripsi produk saja
-					  </p>
-					 
-					  <h4 style="text-align:center">
-					  	<a class="btn" href="product_details.html">Stok: <?=$item['stok']?>
-					  	</a> 
-					  		<a class="btn" href="#">Sold :<?=$item['sold']?>
-					  		</a>
-					   <a class="btn btn-primary" href="#">Rp. <?=number_format($item['price'],0,',','.')?></a></h4>
-					</div>
-				  </div>
-				</li>
-				<?php } ?>
-				
-			  </ul>	
 
-		</div>
-		</div>
+            <a href="<?=$img ?>" title="Fujifilm FinePix S2950 Digital Camera">
+				<img src="<?=$img ?>" style="width:100%" alt="Fujifilm FinePix S2950 Digital Camera"/>
+            </a>
+			  
+			 <div class="btn-toolbar">
+			  <div class="btn-group">
+				<span class="btn"><i class="icon-envelope"></i></span>
+				<span class="btn" ><i class="icon-print"></i></span>
+				<span class="btn" ><i class="icon-zoom-in"></i></span>
+				<span class="btn" ><i class="icon-star"></i></span>
+				<span class="btn" ><i class=" icon-thumbs-up"></i></span>
+				<span class="btn" ><i class="icon-thumbs-down"></i></span>
+			  </div>
+			</div>
+			</div>
+			<div class="span6">
+				<h3><?=$item['name'] ?></h3>
+				<small>- <?=$item['name'] ?></small>
+				<hr class="soft"/>
+				<form class="form-horizontal qtyFrm">
+				  <div class="control-group">
+					<label class="control-label"><span>Rp. <?=$item['price'] ?></span></label>
+				  </div>
+				</form>
+				
+				<hr class="soft"/>
+				<h4><?=$item['stok'] ?> items in stock</h4>
+				<hr class="soft clr"/>
+				<p>
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+				consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+				cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+				proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				
+				</p>
+				<a class="btn btn-small pull-right" href="#detail">More Details</a>
+				<br class="clr"/>
+			<a href="#" name="detail"></a>
+			<hr class="soft"/>
+			</div>
+			
+			<div class="span9">
+            <ul id="productDetail" class="nav nav-tabs">
+              <li class="active"><a href="#home" data-toggle="tab">Product Details</a></li>
+              <li><a href="#profile" data-toggle="tab">Related Products</a></li>
+            </ul>
+            
+          </div>
+
 	</div>
 </div>
+</div> </div>
+</div>
+<!-- MainBody End ============================= -->
 <!-- Footer ================================================================== -->
 	<div  id="footerSection">
 	<div class="container">
@@ -220,9 +162,9 @@
 			 </div>
 			<div id="socialMedia" class="span3 pull-right">
 				<h5>SOCIAL MEDIA </h5>
-				<a href="#"><img width="60" height="60" src="<?=base_url()?>assets/themes/images/facebook.png" title="facebook" alt="facebook"/></a>
-				<a href="#"><img width="60" height="60" src="<?=base_url()?>assets/themes/images/twitter.png" title="twitter" alt="twitter"/></a>
-				<a href="#"><img width="60" height="60" src="<?=base_url()?>assets/themes/images/youtube.png" title="youtube" alt="youtube"/></a>
+				<a href="#"><img width="60" height="60" src="themes/images/facebook.png" title="facebook" alt="facebook"/></a>
+				<a href="#"><img width="60" height="60" src="themes/images/twitter.png" title="twitter" alt="twitter"/></a>
+				<a href="#"><img width="60" height="60" src="themes/images/youtube.png" title="youtube" alt="youtube"/></a>
 			 </div> 
 		 </div>
 		<p class="pull-right">&copy; Bootshop</p>
@@ -235,6 +177,7 @@
 	
 	<script src="<?=base_url()?>assets/themes/js/bootshop.js"></script>
     <script src="<?=base_url()?>assets/themes/js/jquery.lightbox-0.5.js"></script>
+	
 	
 	<!-- Themes switcher section ============================================================================================= -->
 <div id="secectionBox">

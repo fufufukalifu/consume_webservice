@@ -22,6 +22,14 @@ class Welcome extends MX_Controller {
 	
 	public function index()
 	{
+				// echo base_url();
+		$data['title'] = 'Produk Di BalanjaOnline';
+		$data['favorites'] = json_decode(file_get_contents($this->link."/get_products_favorite"),true);
+		$data['items'] = json_decode(file_get_contents($this->link."/get_products/20"),true);
+
+
+		$data['head_product'] = '';
+		$this->load->view('index', $data);
 		$this->load->view('welcome_message');
 	}
 
@@ -61,16 +69,24 @@ class Welcome extends MX_Controller {
 	}
 
 	public function get_product_detail($id){
-
 		$url = $this->link."/get_product_detail/".$id;
-		$data = json_decode(file_get_contents($url),true);
-		print_r($data['products']);	
+		$data['item'] = json_decode(file_get_contents($url),true);
+		// print_r($data['item']);	
+		$data['itm'] = $data['item']['products'];
+		$datas['item'] = $data['itm'][0];	
+		$this->load->view('detail', $datas);
+		
 	} 
 
-		public function search_product_by_name($key){
+	public function search_product_by_name($key){
 		$url = $this->link."/search_product_by_name/".$key;
-		$data = json_decode(file_get_contents($url),true);
-		print_r($data['products']);	
+		$data['items'] = json_decode(file_get_contents($url),true);
+
+		$data['favorites'] = json_decode(file_get_contents($this->link."/get_products_favorite"),true);
+
+		$data['head_product'] = 'Hasil Pencarian <b><i>'.$key.'</i></b>';
+		$data['title'] = 'Produk Diskon Di BalanjaOnline - '.$data['head_product'];
+		$this->load->view('index', $data);
 	} 
 
 	public function test(){
