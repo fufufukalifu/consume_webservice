@@ -60,6 +60,7 @@
 <!-- Sidebar ================================================== -->
 <div id="sidebar" class="span3">
 		<ul id="sideManu" class="nav nav-tabs nav-stacked">
+			<div class="well well-small"><a id="myCart" href="<?='/consume_commerce/index.php/Welcome/mychart'?>"><img src="<?=base_url()?>assets/themes/images/ico-cart.png" alt="cart"><?=$chart_number ?> Items  <span class="badge badge-warning pull-right">Rp. <?=number_format($cost_all_chart+$cost_all_chart*0.1,0,',','.') ?></span></a></div>
 			<li><a href="#">- Program Diskon -</a></li>
 			<li><a href="<?='/consume_commerce/index.php/Welcome/get_products_discount/get_one/100'?>">Buy One Get One Free</a></li>
 			<li><a href="<?='/consume_commerce/index.php/Welcome/get_products_discount/end_year/100'?>">End Year</a></li>

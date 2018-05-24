@@ -5,7 +5,8 @@
 	"homepage": "https://github.com/Pholenk/CodeIgniter-HMVC",
 	"license": "MIT",
 	"require": {
-		"php": ">=5.2.4"
+		"php": ">=5.2.4",
+		"steevenz/rajaongkir": "^2.2"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"
