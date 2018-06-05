@@ -123,6 +123,7 @@
 								</tr>
 								<tr>
 									<td colspan="6" style="text-align:right"><strong>TOTAL (<?=number_format($cost_all_chart,0,',','.') ?> + <?=number_format($total_tax,0,',','.') ?>) =</strong></td>
+									<?php $total = $cost_all_chart+$cost_all_chart*0.1 ?>
 									<td class="label label-important" style="display:block;text-align:right"> <strong > Rp. <?=number_format($cost_all_chart+$cost_all_chart*0.1,0,',','.') ?> </strong></td>
 								</tr>
 							</tbody>
@@ -143,7 +144,7 @@
 
 											<?php $keys = array_keys($couriers) ?>
 											<div class="control-group">
-												<label class="control-label" for="inputCountry">Couriers </label>
+												<label class="control-label" for="inputCountry">Kurir </label>
 												<div class="controls">
 													<select name='courier' id="courier">
 														<?php for ($i = 0; $i < count($keys) ; $i++) { ?>
@@ -153,7 +154,7 @@
 												</div>
 											</div>
 											<div class="control-group">
-												<label class="control-label" for="inputCountry">Provinces </label>
+												<label class="control-label" for="inputCountry">Provinsi </label>
 												<div class="controls">
 													<select name='provine' id='province'>
 														<?php foreach ($provinces as $province): ?>
@@ -164,20 +165,20 @@
 											</div>
 
 											<div class="control-group">
-												<label class="control-label" for="inputCountry">Cities </label>
+												<label class="control-label" for="inputCountry">Kota </label>
 												<div class="controls">
 													<select name='city' id="city">
-														<?php foreach ($cities as $city): ?>
+<!-- 														<?php foreach ($cities as $city): ?>
 															<option value="<?=$city->city_id ?>"><?=$city->city_name ?></option>						
-														<?php endforeach ?>
+														<?php endforeach ?> -->
 													</select>
 												</div>
 											</div>
 
 											<div class="control-group">
-												<label class="control-label" for="inputPost">Address</label>
+												<label class="control-label" for="inputPost">Alamat</label>
 												<div class="controls">
-													<textarea class="form-control" name="address"></textarea>
+													<textarea class="form-control" name="address" id='address'></textarea>
 													<!-- <input type="text" id="inputPost" placeholder="Postcode"> -->
 												</div>
 											</div>
@@ -192,17 +193,13 @@
 											</div> -->
 
 											<div class="control-group">
-												<label class="control-label" for="inputPost">Estimate</label>
+												<label class="control-label" for="inputPost">Estimasi</label>
 												<div class="controls estimate">
 													<p class="form-control">[Silahkan Tentukan Kurir dan Alamat anda!]</p>
 												</div>
 											</div>
 
-											<div class="control-group">
-												<div class="controls">
-													<a onclick="get_list_cost()" class="btn">Continue To Checkout </a>
-												</div>
-											</div>
+											
 										</form>				  
 									</td>
 								</tr>
@@ -214,11 +211,18 @@
 								<tr>
 									<td>
 										<div class="control-group">
-												<label class="control-label" for="inputPost">Total Tagihan</label>
-												<div class="controls estimate">
-													<p class="form-control">[Silahkan Tentukan Kurir dan Alamat anda!]</p>
-												</div>
+											<label class="control-label text-info pilih" for="inputPost">[silahkan pilih jenis pengiriman]</label>
+											<div class="controls">
+												<p class="form-control info-checkout">
+
+												</p>
+												<p class="pay hide">
+												<a onclick="to_link()" class="btn">Lanjutkan Pembayaran </a>
+													
+												</p>
 											</div>
+
+										</div>
 									</td>
 								</tr>
 							</tbody>
@@ -228,6 +232,7 @@
 				</div> </div>
 			</div></body>
 			<script type="text/javascript">
+				var value = '';
 				// fungsi cari
 				function cari(){
 					search_key = $('.srchTxt').val();
@@ -298,8 +303,9 @@
 
 				// tambahkan daftar ongkir
 				function append_select_ongkir(value){
+					data = JSON.stringify(value);
 					const content = "<label class='radio'>"+
-					"<input type='radio' name='optionsRadios' value='"+JSON.stringify(value)+"' checked=''>OKE"+
+					"<input onclick='label_klik("+data+")' type='radio' name='optionsRadios' checked=''>"+
 					"<p class='text-itaclic'>"+value.service+"</p>"+
 					"<p class='text-itaclic'>Rp."+value.cost.toLocaleString()+" </p>"+
 					"<p class='text-itaclic'>Estimasi Hari : "+value.etd+"</p>"+
@@ -308,5 +314,37 @@
 					$('.estimate').append(content);
 				}
 				//end tambahkan daftar ongkir
+
+
+				// checkout
+				function label_klik(val){
+					// value = JSON.parse(val);
+					console.log(val);
+					cost = parseInt('<?=$total ?>');
+					total = cost+val.cost;
+
+					const content = '<h3>Total tagihan anda adalah Rp. '+val.cost.toLocaleString()+' + Rp. '+cost.toLocaleString()+ ' = Rp. '+total.toLocaleString()+'</h3>';
+					$('.pay').removeClass('hide');
+					$('.info-checkout').html(content);
+					$('.continue_payment').removeClass('hide');
+					$('.pilih').html('');
+					value = total;
+				}
+
+				function to_link(){
+					data = {
+						berat : "<?=(int)$berat ?>",
+						total : value,
+						alamat : $('#address').val(),
+						province : $('#province option:selected').text(),
+						city : $('#city option:selected').text(),
+						courier : $('#courier option:selected').text()
+
+					};
+
+					base =  "pay/"+encodeURI(data.total)+"/"+encodeURI(data.berat)+"/"+encodeURI(data.alamat)+"/"+encodeURI(data.province)+"/"+encodeURI(data.city)+"/"+encodeURI(data.courier)+"/";
+					window.location.assign(base);
+				}
+				// end checkout 
 			</script>
 			</html>

@@ -179,7 +179,15 @@
 					  	</a> 
 					  		<a class="btn" href="#">Sold :<?=$item['sold']?>
 					  		</a>
-					   <a class="btn btn-primary" href="#">Rp. <?=number_format($item['price'],0,',','.')?></a></h4>
+					   <a class="btn btn-primary" href="#">Rp. <?=number_format($item['price'],0,',','.')?></a>
+					   <select style="width: 50px;">
+					   <?php for ($i = 1;$i<=$item['stok'];$i++): ?>
+					   	<option value="<?=$i ?>"><?=$i ?></option>					   		
+					   	<?php endfor ?>	
+					   </select>
+					   <a class="btn btn-success" href="#" title="Tambah Ke chart"> + </a>
+
+					   </h4>
 					</div>
 				  </div>
 				</li>

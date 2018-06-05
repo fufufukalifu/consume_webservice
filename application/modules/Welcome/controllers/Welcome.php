@@ -24,6 +24,10 @@ private $key_api = '38bbe5b097bf93c6a63656f53c136afa';
 function __construct(){
 	// $this->load->model('rajaongkir/rajaongkir');
 	$this->load->library('RajaOngkir');
+	$config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-@\=';
+	$this->load->helper('form');
+	$this->load->helper('url');
+
 }
 public function index()
 {
@@ -134,7 +138,7 @@ public function mychart(){
 
 	$data['provinces'] = $provinces->rajaongkir->results;
 	$data['cities'] = $cities->rajaongkir->results;
-
+	
 	$data['head_product'] = '';
 	$data['cost_all_chart'] = $this->get_cost_total()['total_chart'][0]['total_charted'];
 	$this->load->view('chart', $data);
@@ -235,6 +239,41 @@ function get_cost($origin=23, $destination, $weight, $courier){
 	}
 }
 
+# get cost with passing origin, destination, weigth and courier that used
+function get_bank_list($id = 0){
+	if ($id==0) {
+		$url = "http://localhost:3100/get_bank_list";
+	}else{
+		$url = "http://localhost:3100/get_bank_detail/".$id;
+	}
+	$curl = curl_init();
+
+	curl_setopt_array($curl, array(
+		CURLOPT_URL => $url,
+		CURLOPT_RETURNTRANSFER => true,
+		CURLOPT_ENCODING => "",
+		CURLOPT_MAXREDIRS => 10,
+		CURLOPT_TIMEOUT => 30,
+		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		CURLOPT_CUSTOMREQUEST => "GET",
+		CURLOPT_HTTPHEADER => array(
+			"content-type: application/x-www-form-urlencoded",
+			"key: 38bbe5b097bf93c6a63656f53c136afa"
+		),
+	));
+
+	$response = curl_exec($curl);
+	$err = curl_error($curl);
+
+	curl_close($curl);
+
+	if ($err) {
+		return "cURL Error #:" . $err;
+	} else {
+		return $response;
+	}
+}
+
 function ajax_get_city($province_id){
 	$data = json_decode($this->get_cities($province_id));
 	$cities = $data->rajaongkir->results;
@@ -259,7 +298,37 @@ function ajax_get_cost($origin=23, $destination, $weight, $courier){
 			$shipping_cost[] = $temp;
 		}
 	}
-		echo json_encode($shipping_cost);
+	echo json_encode($shipping_cost);
+
+}
+
+
+function pay($value,$berat, $alamat, $province, $city, $courier){
+	$banks = $this->get_bank_list();
+	$data['bank'] = json_decode($banks);
+	$data['info'] = ['value'=>$value, 'berat'=>$berat, 'alamat'=>$alamat, 'province'=>$province, 'city'=>$city, 'courier'=>$courier];
+	$data['chart'] = json_decode(file_get_contents($this->link."/get_charts"),true);
+	$data['chart_number'] = count($data['chart']['products']);
+	$data['cost_all_chart'] = $this->get_cost_total()['total_chart'][0]['total_charted'];
+
+	$data['favorites'] = json_decode(file_get_contents($this->link."/get_products_favorite"),true);
+
+	$data['title'] = 'Payment';
+	$this->load->view('payment', $data);
+}
+
+function do_payment(){
+	$post = $this->input->post();
+	$bank = $this->get_bank_list((int)$post['bank']);
+	$uniq = mt_rand(100, 999);
+
+	$total = $post['total'] + $uniq;
+	$data['title'] = 'Pembayaran';
+	$data['total'] = $total;
+	$data['post'] = $post;
+	$data['bank'] = json_decode($bank)[0];
+
+	$this->load->view('checkout', $data);
 
 }
 
