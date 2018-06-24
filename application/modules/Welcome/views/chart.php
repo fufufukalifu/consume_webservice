@@ -304,12 +304,12 @@
 				// tambahkan daftar ongkir
 				function append_select_ongkir(value){
 					data = JSON.stringify(value);
-					const content = "<label class='radio'>"+
+					const content = "<a><label class='radio'>"+
 					"<input onclick='label_klik("+data+")' type='radio' name='optionsRadios' checked=''>"+
 					"<p class='text-itaclic'>"+value.service+"</p>"+
 					"<p class='text-itaclic'>Rp."+value.cost.toLocaleString()+" </p>"+
 					"<p class='text-itaclic'>Estimasi Hari : "+value.etd+"</p>"+
-					"</label>";
+					"</label></a>";
 					
 					$('.estimate').append(content);
 				}

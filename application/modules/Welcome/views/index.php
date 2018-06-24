@@ -23,6 +23,8 @@
 	<link href="<?=base_url()?>assets/themes/css/font-awesome.css" rel="stylesheet" type="text/css">
 <!-- Google-code-prettify -->	
 	<link href="<?=base_url()?>assets/themes/js/google-code-prettify/prettify.css" rel="stylesheet"/>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <!-- fav and touch icons -->
     <link rel="shortcut icon" href="<?=base_url()?>assets/themes/images/ico/favicon.ico">
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?=base_url()?>assets/themes/images/ico/apple-touch-icon-144-precomposed.png">
@@ -134,7 +136,7 @@
 				<li class="span3">
 				  <div class="thumbnail">
 				  <!-- <i class="tag"></i> -->
-				  	<?php $img2 = base_url().'/assets/img-items/'.$favorite['id'].'.jpg' ?>
+				  	<?php $img2 = base_url().'assets/img-items/'.$favorite['id'].'.jpg' ?>
 
 					<a href="<?='/consume_commerce/index.php/Welcome/get_product_detail/'.$favorite['id']?>"><img src="<?=$img2?>" alt=""></a>
 					<div class="caption text-center">
@@ -166,7 +168,7 @@
 				<li class="span3">
 				  <div class="thumbnail">
 				  	<!-- base_url()?>assets/themes/css/bootstrap-responsive.min.css -->
-				  	<?php $img = base_url().'/assets/img-items/'.$item['id'].'.jpg' ?>
+				  	<?php $img = base_url().'assets/img-items/'.$item['id'].'.jpg' ?>
 					<a  href="product_details.html"><img src="<?=$img?>" alt=""/></a>
 					<div class="caption">
 					  <h5><?=$item['name']?></h5>
@@ -180,12 +182,12 @@
 					  		<a class="btn" href="#">Sold :<?=$item['sold']?>
 					  		</a>
 					   <a class="btn btn-primary" href="#">Rp. <?=number_format($item['price'],0,',','.')?></a>
-					   <select style="width: 50px;">
+					   <select style="width: 50px;" class="select-id-<?=$item['id'] ?>">
 					   <?php for ($i = 1;$i<=$item['stok'];$i++): ?>
 					   	<option value="<?=$i ?>"><?=$i ?></option>					   		
 					   	<?php endfor ?>	
 					   </select>
-					   <a class="btn btn-success" href="#" title="Tambah Ke chart"> + </a>
+					   <a class="btn btn-success" title="Tambah Ke chart" onclick=add_item('<?=$item['id'] ?>')> + </a>
 
 					   </h4>
 					</div>
@@ -302,11 +304,40 @@
 <span id="themesBtn"></span>
 </body>
 <script type="text/javascript">
+
 	function cari(){
 		search_key = $('.srchTxt').val();
 		base_url = "<?=base_url() ?>";
 		link = base_url+"/index.php/Welcome/search_product_by_name/"+search_key;
 		window.location = link;
+	}
+
+	function add_item(id){
+		number = $('.select-id-'+id).val();
+		base_url = "<?=base_url() ?>";
+					const url = "Welcome/add_chart/"+id+"/"+number;
+
+		// window.location = link;	
+		// start ajax
+					$.ajax({
+						type: "POST",
+						url: url,
+						dataType:"TEXT",
+						success: function(data){
+					  		              swal({
+                title: "Berhasil!",
+                text: "Berasil di tambahkan ke chart",
+                type: "success",
+                timer:1500
+              }).then(function() {
+                location.reload();
+              });
+					  	},error:function(data){
+					  		console.log('gagal');
+					  		console.log(data);
+					  	},
+					  });
+					// # end ajax
 	}
 </script>
 </html>

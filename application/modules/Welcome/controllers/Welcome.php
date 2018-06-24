@@ -317,12 +317,25 @@ function pay($value,$berat, $alamat, $province, $city, $courier){
 	$this->load->view('payment', $data);
 }
 
+function insert_chart($id, $stock){
+	$data = json_decode(file_get_contents($this->link."/insert_to_chart/".$id."/".$stock),true);
+	return $data;
+}
+
+function add_chart($id, $stock){
+	$message = $this->insert_chart($id, $stock);
+	echo "1";
+
+}
+
 function do_payment(){
 	$post = $this->input->post();
 	$bank = $this->get_bank_list((int)$post['bank']);
 	$uniq = mt_rand(100, 999);
-
+	$data = json_decode(file_get_contents($this->link."/update_chart/"),true);
+	
 	$total = $post['total'] + $uniq;
+
 	$data['title'] = 'Pembayaran';
 	$data['total'] = $total;
 	$data['post'] = $post;
