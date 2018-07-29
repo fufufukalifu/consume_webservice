@@ -318,7 +318,7 @@ function pay($value,$berat, $alamat, $province, $city, $courier){
 
 	$data['title'] = 'Payment';
 	$this->load->view('payment', $data);
-	$data = json_decode(file_get_contents($this->link."/insert_to_ship/".$value."/".$berat."/".$province."/".$city."/".$courier."/".$alamat."/".$resi."/".$transaksi),true);
+	$data = json_decode(file_get_contents($this->link."/payment/".$value."/".$berat."/".$province."/".$city."/".$courier."/".$alamat."/".$resi."/".$transaksi),true);
 
 }
 

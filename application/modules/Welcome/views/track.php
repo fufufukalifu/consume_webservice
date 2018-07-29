@@ -282,6 +282,7 @@
 <span id="themesBtn"></span>
 </body>
 <script type="text/javascript">
+		base_url = "<?=base_url() ?>";
 
 	function cari(){
 		search_key = $('.srchTxt').val();
@@ -320,7 +321,7 @@
 
 function track(){
 	// consl.log(1);
-	location.href = $('#input_search').val();
+	location.href = base_url+"index.php/Welcome/track/"+$('#input_search').val();
 }
 			</script>
 			</html>

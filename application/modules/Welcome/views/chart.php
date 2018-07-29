@@ -207,6 +207,12 @@
 												</div>
 											</div>
 
+											<div class="control-group">
+												<div class="controls estimate">
+													<a href="" class='btn btn-primary' onclick=get_list_cost()>Proses</a>
+												</div>
+											</div>
+
 											
 										</form>				  
 									</td>
