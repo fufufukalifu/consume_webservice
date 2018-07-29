@@ -39,10 +39,13 @@
 					<section id="typography">
 
 						<div class="hero-unit">
-							<h2 class="text-center">Satu Langkah lagi barang akan segera dikirim!</h2>
+							<h2 class="text-center">Satu Langkah lagi barang akan segera dikirim !</h2>
 							<p>Silahkan transfer ke nomor rekening <?=$bank->name ?> : <?=$bank->rec_number ?> 
-								atas nama PT. Bootshop sebesar <span style="color: red;font-weight: bold;" class="text-danger">Rp. <?=number_format($total,0,',','.') ?></span> Dimohon untuk melakukan transfer sesuai dengan yang tertera agar otomatis terverifikasi oleh sistem</p>
+								atas nama PT. Bootshop sebesar <span style="color: red;font-weight: bold;" class="text-danger">Rp. <?=number_format($total,0,',','.') ?></span> Dimohon untuk melakukan transfer sesuai dengan yang tertera agar otomatis terverifikasi oleh sistem secara otomatis. Silahkan track transaksi anda di <b><?=$ship[0]['no_transaksi'] ?></b> </p>
+						<span>anda memiliki waktu : </span><span id="demo"></span>
+						
 						</div>
+
 					</section>
 				</div>
 			</div>
@@ -58,5 +61,40 @@
 		link = base_url+"/index.php/Welcome/search_product_by_name/"+search_key;
 		window.location = link;
 	}
+</script>
+
+<script>
+// Set the date we're counting down to
+countDownDate = new Date();
+var today = new Date();
+today.setHours(today.getHours() + 24);
+
+countDownDate=today;
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get todays date and time
+  var now = new Date().getTime();
+
+  // Find the distance between now an the count down date
+  var distance = countDownDate - now;
+
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  // Display the result in the element with id="demo"
+  document.getElementById("demo").innerHTML = hours + " jam "
+  + minutes + " menit " + seconds + " detik ";
+
+  // If the count down is finished, write some text 
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("demo").innerHTML = "EXPIRED";
+  }
+}, 1000);
 </script>
 </html>

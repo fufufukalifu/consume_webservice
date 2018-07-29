@@ -23,6 +23,8 @@
 		<link href="<?=base_url()?>assets/themes/css/font-awesome.css" rel="stylesheet" type="text/css">
 		<!-- Google-code-prettify -->	
 		<link href="<?=base_url()?>assets/themes/js/google-code-prettify/prettify.css" rel="stylesheet"/>
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 		<!-- fav and touch icons -->
 		<link rel="shortcut icon" href="<?=base_url()?>assets/themes/images/ico/favicon.ico">
 		<link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?=base_url()?>assets/themes/images/ico/apple-touch-icon-144-precomposed.png">
@@ -95,6 +97,8 @@
 							<li><a href="<?='/consume_commerce/index.php/Welcome/get_products_discount/end_year/100'?>">End Year</a></li>
 							<li><a href="<?='/consume_commerce/index.php/Welcome/get_products_discount/free_sale/100'?>">Free Sale</a></li>
 							<li><a href="<?='/consume_commerce/index.php/Welcome/get_products_discount/event/100'?>">Event</a></li>
+							<li><a href="<?='/consume_commerce/index.php/Welcome/track'?>">Track</a></li>
+
 
 						</ul>
 						<br/>
@@ -122,81 +126,58 @@
 		</div>
 		<!-- Sidebar end=============================================== -->
 		<div class="span9">		
-			<h4>Info Tagihan</h4>
-			<table class="table table-bordered">
-				<tbody><tr><th>Info Tagihan</tr>
-					<tr>
-						<td width="120">total</td>
-						<td width="10px">:</td>
-						<td>Rp. <?=number_format($info['value'],0,',','.') ?></td>
-					</tr>
 
-					<tr>
-						<td>Berat</td>
-						<td>:</td>
-						<td><?=$info['berat'] ?></td>
-					</tr>
-
-					<tr>
-						<td>Alamat</td>
-						<td>:</td>
-						<td><?=urldecode($info['alamat']) ?></td>
-					</tr>
-
-					<tr>
-						<td>Provinsi</td>
-						<td>:</td>
-						<td><?=urldecode($info['province']) ?></td>
-					</tr>
-
-
-					<tr>
-						<td>Kota</td>
-						<td>:</td>
-						<td><?=urldecode($info['city']) ?></td>
-					</tr>
-					<tr>
-						<td>Kurir</td>
-						<td>:</td>
-						<td><?=urldecode($info['courier']) ?></td>
-					</tr>
-
-				</table>
-
-				
-				<h4>Pembayaran</h4>
-				<table class="table table-bordered">
-					<tbody><tr><th>Daftar Bank Yang Tersedia</tr>
-						<?php $action = base_url().'index.php/Welcome/do_payment/' ?>
-					<form id='payment' action="<?=$action ?>" method='post'>
-						<input type="hidden" name="berat" value="<?=$info['berat'] ?>">
-						<input type="hidden" name="total" value="<?=$info['value'] ?>">
-						<input type="hidden" name="alamat" value="<?=urldecode($info['alamat']) ?>">
-						<input type="hidden" name="province" value="<?=urldecode($info['province']) ?>">
-						<input type="hidden" name="city" value="<?=urldecode($info['city']) ?>">
-						<input type="hidden" name="courier" value="<?=urldecode($info['courier']) ?>">
-						<?php foreach ($bank as $value): ?>
-							<tr>
-								<td>
-									<label class='radio'>
-										<input type='radio' value='<?=$value->id ?>' name='bank' title='<?=$value->name ?>'>
-										<p class='text-itaclic'><img src="<?=$value->link ?>" width="120px"></p>
-									</label>
-								</td>
-							</tr>
-						<?php endforeach ?>
-					</table>
-					<div class="controls">
-						<!-- <a onclick="continue_payment()" class="btn">Lanjutkan Pembayaran </a> -->
-						<button type="submit" class="btn">Lanjutkan Pembayaran </a>
+			<h4>Track Your Order Here</h4>
+			<div class="well">
+				<h5>Reset your password</h5><br>
+				Silahkan masukan no.resi atau nomor transaksi untuk mengetahui status pesanan anda..<br><br><br>
+					<div class="control-group">
+						<label class="control-label" for="inputEmail1">Resi / No. Transaksi dan klik search...</label>
+						<div class="controls">
+							<input class="span5" type="text" id="input_search" placeholder="No. Resi Atau No. Transaksi"> 
+							<a class='btn btn-primary' onclick='track()'>Search</a>
+						</div>
 					</div>
-					</form>
+					<div class="controls">
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>id</th>
+									<th>Harga</th>
+									<th>Alamat</th>
+									<th>Kurir</th>
+									<th>Resi</th>
+									<th>Transaksi</th>
+								</tr>
+							</thead>
+							<?php if (count($result)==0): ?>
+							<tbody>
 
+								<td colspan="6">
+									Tidak ada data..
+								</td>
+							</tbody>
+								<?php else: ?>
+							<tbody>
+								<?php foreach ($result as $result): ?>
+								<td><?=$result['id'] ?></td>
+								<td><?=$result['value'] ?></td>
+								<td><?=$result['alamat'] ?> <?=$result['province'] ?> <?=$result['city'] ?> </td>
+								<td><?=$result['courier'] ?></td>
+								<td><?=$result['no_resi'] ?></td>
+								<td><?=$result['no_transaksi'] ?></td>
+								<?php endforeach ?>
+								
+							</tbody>
+							<?php endif ?>
 
-				</div> 
+						</table>
+					</div>
 			</div>
 		</div>
+
 	</div>
+</div>
 </div>
 <!-- Footer ================================================================== -->
 <div  id="footerSection">
@@ -301,6 +282,7 @@
 <span id="themesBtn"></span>
 </body>
 <script type="text/javascript">
+
 	function cari(){
 		search_key = $('.srchTxt').val();
 		base_url = "<?=base_url() ?>";
@@ -308,9 +290,37 @@
 		window.location = link;
 	}
 
-	function continue_payment(){
-		data = $('#payment').serialize();
-		console.log(data);
-	}
-</script>
-</html>
+	function add_item(id){
+		number = $('.select-id-'+id).val();
+		base_url = "<?=base_url() ?>";
+		const url = "Welcome/add_chart/"+id+"/"+number;
+
+		// window.location = link;	
+		// start ajax
+		$.ajax({
+			type: "POST",
+			url: url,
+			dataType:"TEXT",
+			success: function(data){
+				swal({
+					title: "Berhasil!",
+					text: "Berasil di tambahkan ke chart",
+					type: "success",
+					timer:1500
+				}).then(function() {
+					location.reload();
+				});
+			},error:function(data){
+				console.log('gagal');
+				console.log(data);
+			},
+		});
+					// # end ajax
+				}
+
+function track(){
+	// consl.log(1);
+	location.href = $('#input_search').val();
+}
+			</script>
+			</html>

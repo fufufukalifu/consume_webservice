@@ -69,6 +69,8 @@
 							<li><a href="<?='/consume_commerce/index.php/Welcome/get_products_discount/free_sale/100'?>">Free Sale</a></li>
 							<li><a href="<?='/consume_commerce/index.php/Welcome/get_products_discount/event/100'?>">Event</a></li>
 							<li><a href="<?='/consume_commerce/index.php/Welcome/get_products_discount/event/100'?>">Event</a></li>
+			<li><a href="<?='/consume_commerce/index.php/Welcome/track'?>">Track</a></li>
+							
 						</ul>
 						<br/>
 
@@ -87,7 +89,13 @@
 									<th>Total</th>
 								</tr>
 							</thead>
-							<tbody>
+							<?php if (empty($items['products'])) {
+								echo "<h3>Chart anda kosong !</h3>";
+								$class = 'hide';
+							}else{
+								$class = '';
+							} ?>
+							<tbody class="<?=$class ?>">
 								<?php 
 								$total_tax = 0;
 								$total_item = 0;
@@ -130,7 +138,7 @@
 						</table>
 
 						<table class="table table-bordered">
-							<tbody><tr><th>ESTIMATE YOUR SHIPPING</th></tr>
+							<tbody class="<?=$class ?>"><tr><th>ESTIMATE YOUR SHIPPING</th></tr>
 								<tr> 
 									<td>
 										<form class="form-horizontal">
@@ -138,7 +146,7 @@
 												<label class="control-label">Berat </label>
 												<div class="controls">
 													<?php $berat = $total_item/3 ?>
-													<input type="text" name="weight" value="<?= (int)$berat ?> Kg" readonly>
+													<input type="text" name="weight" value="<?= ceil($berat) ?> Kg" readonly>
 												</div>
 											</div>
 
@@ -207,7 +215,7 @@
 						</table>
 
 						<table class="table table-bordered">
-							<tbody><tr><th>CHECKOUT INFO</th></tr>
+							<tbody class="<?=$class ?>"><tr><th>CHECKOUT INFO</th></tr>
 								<tr>
 									<td>
 										<div class="control-group">
@@ -217,7 +225,7 @@
 
 												</p>
 												<p class="pay hide">
-												<a onclick="to_link()" class="btn">Lanjutkan Pembayaran </a>
+													<a onclick="to_link()" class="btn">Lanjutkan Pembayaran </a>
 													
 												</p>
 											</div>
@@ -265,7 +273,7 @@
 					  		$('#postal_code').append("<option value="+value.postal_code+">"+value.postal_code+"</option>");
 					  	});
 					  },error:function(data){
-					  	console.log(data.responseText);
+					  	// console.log(data.responseText);
 					  },
 					});
 					get_list_cost();
@@ -274,9 +282,12 @@
 
 				// fungsi list estimasi harga
 				function get_list_cost(){
-					const city_id = $('#city').val();
-					const courier = $('#courier').val();
-					const weight = parseInt("<?=$total_item ?>")/3;
+					var city_id = $('#city').val();
+					var courier = $('#courier').val();
+					var weight = parseInt("<?=$total_item ?>")/3;
+					if (weight <= 1){
+						weight = 1;
+					}
 					const url = "Welcome/ajax_get_cost/23/"+city_id+"/"+parseInt(weight)+"/"+courier+"";
 					console.log(url);
 
@@ -319,7 +330,7 @@
 				// checkout
 				function label_klik(val){
 					// value = JSON.parse(val);
-					console.log(val);
+					// console.log(val);
 					cost = parseInt('<?=$total ?>');
 					total = cost+val.cost;
 

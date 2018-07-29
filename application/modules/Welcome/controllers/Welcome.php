@@ -43,8 +43,6 @@ public function index()
 	
 	$data['head_product'] = '';
 	$this->load->view('index', $data);
-	$this->load->view('welcome_message');
-
 }
 
 public function get_all_products($limit = 1000){
@@ -142,7 +140,6 @@ public function mychart(){
 	$data['head_product'] = '';
 	$data['cost_all_chart'] = $this->get_cost_total()['total_chart'][0]['total_charted'];
 	$this->load->view('chart', $data);
-
 }
 
 #get provinces from rajaongkir
@@ -299,14 +296,20 @@ function ajax_get_cost($origin=23, $destination, $weight, $courier){
 		}
 	}
 	echo json_encode($shipping_cost);
-
 }
 
 
 function pay($value,$berat, $alamat, $province, $city, $courier){
 	$banks = $this->get_bank_list();
 	$data['bank'] = json_decode($banks);
+
+	$random = time() . rand(10*45, 100*98);
+	$resi = time() . rand(10*45, 100*98);;
+	$transaksi = time()."ID";
+	
+
 	$data['info'] = ['value'=>$value, 'berat'=>$berat, 'alamat'=>$alamat, 'province'=>$province, 'city'=>$city, 'courier'=>$courier];
+
 	$data['chart'] = json_decode(file_get_contents($this->link."/get_charts"),true);
 	$data['chart_number'] = count($data['chart']['products']);
 	$data['cost_all_chart'] = $this->get_cost_total()['total_chart'][0]['total_charted'];
@@ -315,6 +318,8 @@ function pay($value,$berat, $alamat, $province, $city, $courier){
 
 	$data['title'] = 'Payment';
 	$this->load->view('payment', $data);
+	$data = json_decode(file_get_contents($this->link."/insert_to_ship/".$value."/".$berat."/".$province."/".$city."/".$courier."/".$alamat."/".$resi."/".$transaksi),true);
+
 }
 
 function insert_chart($id, $stock){
@@ -324,16 +329,17 @@ function insert_chart($id, $stock){
 
 function add_chart($id, $stock){
 	$message = $this->insert_chart($id, $stock);
-	echo "1";
-
 }
 
 function do_payment(){
+	
+
 	$post = $this->input->post();
 	$bank = $this->get_bank_list((int)$post['bank']);
 	$uniq = mt_rand(100, 999);
-	$data = json_decode(file_get_contents($this->link."/update_chart/"),true);
-	
+	json_decode(file_get_contents($this->link."/update_chart/"),true);
+	$data['ship'] = json_decode(file_get_contents($this->link."/get_ship_by_value/".$post['total']),true);
+
 	$total = $post['total'] + $uniq;
 
 	$data['title'] = 'Pembayaran';
@@ -345,4 +351,15 @@ function do_payment(){
 
 }
 
+
+function track($value = "123"){
+	$data['title'] = 'Track pesanan anda disini';
+
+	$data['chart'] = json_decode(file_get_contents($this->link."/get_charts"),true);
+	$data['result'] = json_decode(file_get_contents($this->link."/get_ship_by_transaksi/".$value),true);
+	$data['chart_number'] = count($data['chart']['products']);
+	$data['cost_all_chart'] = $this->get_cost_total()['total_chart'][0]['total_charted'];
+	$data['head_product'] = '';
+	$this->load->view('track', $data);
+}
 }

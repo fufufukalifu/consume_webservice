@@ -97,6 +97,8 @@
 			<li><a href="<?='/consume_commerce/index.php/Welcome/get_products_discount/end_year/100'?>">End Year</a></li>
 			<li><a href="<?='/consume_commerce/index.php/Welcome/get_products_discount/free_sale/100'?>">Free Sale</a></li>
 			<li><a href="<?='/consume_commerce/index.php/Welcome/get_products_discount/event/100'?>">Event</a></li>
+			<li><a href="<?='/consume_commerce/index.php/Welcome/track'?>">Track</a></li>
+
 
 		</ul>
 		<br/>
